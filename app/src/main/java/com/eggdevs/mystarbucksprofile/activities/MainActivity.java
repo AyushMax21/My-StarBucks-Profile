@@ -30,16 +30,34 @@ public class MainActivity extends AppCompatActivity {
          @Override
          public void onClick(View view) {
             email = etEmail.getText().toString();
-            int a = 7;
             password = etPassword.getText().toString();
             if (email.isEmpty() || password.isEmpty()) {
                Toast.makeText(MainActivity.this, "Please enter the credentials!", Toast.LENGTH_SHORT).show();
             } else {
-               Intent i = new Intent(MainActivity.this, HomeActivity.class);
 
-               i.putExtra("user_name", email);
+               if (email.contains("@")) {
+                  int indexOfAt = email.indexOf('@');
 
-               startActivity(i);
+                  String domain = email.substring(indexOfAt+1);
+                  String restOfString = email.substring(0, indexOfAt);
+
+                  if (restOfString.length() > 0 &&
+                          (domain.equals("gmail.com") || domain.equals("yahoo.com") || domain.equals("yahoo.in"))) {
+                     Intent i = new Intent(MainActivity.this, HomeActivity.class);
+
+                     i.putExtra("user_name", email);
+
+                     startActivity(i);
+                     finish();
+                  }
+                  else {
+                     Toast.makeText(MainActivity.this, "Check the order of the string!", Toast.LENGTH_SHORT).show();
+                  }
+
+               }
+               else {
+                  Toast.makeText(MainActivity.this, "Please enter a valid email!", Toast.LENGTH_SHORT).show();
+               }
             }
          }
       });
